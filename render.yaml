@@ -1,0 +1,39 @@
+# Render Blueprint — ON studio coming-soon
+#
+# Koppelen in Render via "New +" → "Blueprint" → deze repo kiezen.
+# Statische site: geen build, geen dependencies, geen runtime.
+#
+# Daarna in Render → Settings → Custom Domains:
+#   on-studio.nl  en  www.on-studio.nl  toevoegen.
+# Render toont dan de exacte A- en CNAME-waarde voor Squarespace DNS.
+# LET OP: bij Squarespace alleen de A/CNAME wijzigen — de MX-records
+# (smtp.google.com) laten staan, anders ligt storm@on-studio.nl eruit.
+
+services:
+  - type: web
+    name: on-studio-coming-soon
+    runtime: static
+    branch: main
+    autoDeploy: true
+    staticPublishPath: .
+
+    headers:
+      # Fonts zijn immutable en hebben een hash-loze naam die we zelf beheren.
+      - path: /fonts/*
+        name: Cache-Control
+        value: public, max-age=31536000, immutable
+      # De pagina zelf moet wel vers blijven — hij wordt straks vervangen.
+      - path: /index.html
+        name: Cache-Control
+        value: public, max-age=0, must-revalidate
+      - path: /*
+        name: X-Content-Type-Options
+        value: nosniff
+      - path: /*
+        name: Referrer-Policy
+        value: strict-origin-when-cross-origin
+
+    routes:
+      - type: rewrite
+        source: /*
+        destination: /index.html
