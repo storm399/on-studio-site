@@ -9,13 +9,27 @@ Tijdelijke landingspagina voor on-studio.nl.
 
 ## Merk
 Logo, kleuren en typografie komen uit het Figma-bestand van ON studio:
-ON. in Syne SemiBold (letter-spacing .04em), punt in aan-groen `#19C37D`,
-STUDIO in Syne Regular (letter-spacing .42em). Achtergrond inkt `#111111`.
-Verhoudingen zijn 1-op-1 overgenomen: 160/34 px, basislijnafstand 65 px.
+ON in Syne SemiBold (letter-spacing .04em) met de aan-streep door de O in
+`#19C37D`, STUDIO in Syne Regular. Achtergrond inkt `#111111`.
+Corps 160/34 px en basislijnafstand 65 px zijn 1-op-1 uit de bron.
+
+De streep is opgemeten op de letter, niet geschat: Syne SemiBold heeft een
+cap-hoogte van .66em, zijstok .12em en boven/onder-stok .105em. De streep is
+.11em dik, steekt .10em boven de O uit en eindigt op 50% van de cap-hoogte.
+De inkeping is geen echte uitsparing maar een baan in inktkleur achter de
+streep — dat werkt alleen op een egale achtergrond. Komt er ooit een foto of
+verloop achter, dan moet het logo een SVG worden.
+
+STUDIO wordt met `space-between` over de merkbreedte verdeeld in plaats van
+met een vaste letter-spacing, zodat het links en rechts exact aansluit bij
+elk schermformaat — ook als het merk van breedte verandert.
+
+`punt.html` bewaart de eerdere variant met de punt als aan-teken.
 
 ## Animatie
-De punt is het aan-teken: die klikt als laatste aan en blijft daarna rustig branden.
-`prefers-reduced-motion` toont direct de eindstand.
+De streep is het aan-teken: die groeit als laatste omhoog uit de O, klikt aan
+op groen en blijft daarna rustig branden. `prefers-reduced-motion` en
+`<noscript>` tonen direct de eindstand.
 
 ## Lokaal bekijken
     python3 -m http.server 4321

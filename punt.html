@@ -3,9 +3,10 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>ON-studio — Coming soon</title>
+<title>ON-studio — variant met punt</title>
 <meta name="description" content="ON studio. Binnenkort hier.">
 <meta name="robots" content="noindex">
+<!-- Bewaarde variant: aan-teken als punt i.p.v. streep door de O. -->
 <meta name="theme-color" content="#111111">
 
 <meta property="og:type" content="website">
@@ -14,7 +15,7 @@
 <meta property="og:url" content="https://on-studio.nl/">
 
 <link rel="preload" href="fonts/syne-var.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%23111111'/%3E%3Cg fill='none' stroke-width='9' stroke-linecap='round'%3E%3Cpath d='M41 30.6A26 26 0 1 0 59 30.6' stroke='%23ffffff'/%3E%3Cpath d='M50 52V18' stroke='%2319C37D'/%3E%3C/g%3E%3C/svg%3E">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%23111111'/%3E%3Ccircle cx='50' cy='50' r='22' fill='%2319C37D'/%3E%3C/svg%3E">
 
 <style>
   @font-face{
@@ -52,7 +53,7 @@
     text-rendering:optimizeLegibility;
   }
 
-  /* Zachte gloed, komt pas op als de streep aan gaat */
+  /* Zachte gloed, komt pas op als de punt aan gaat */
   .glow{
     position:fixed;
     left:50%; top:50%;
@@ -81,46 +82,10 @@
     white-space:nowrap;
   }
 
-  /* De aan-streep door de O. Maten in em van het merk-corps, zodat alles
-     meeschaalt. De box-shadow-spread in inktkleur snijdt de inkeping in de O:
-     een bredere baan achter de groene streep, op een egale achtergrond
-     niet van een echte uitsparing te onderscheiden. */
-  .o-wrap{
-    position:relative;
+  .punt{
+    color:var(--aan);
+    margin-left:.025em;
     display:inline-block;
-    /* Gemeten aan Syne SemiBold: cap-hoogte O = .66em, basislijn op .8214em
-       vanaf de doostop, dus de O loopt van .1614em tot .8214em. Zijstok van
-       de O = .12em, boven/onder = .105em. De streep pakt daar het midden van. */
-    --sw:.11em;     /* dikte van de streep, gelijk aan de stok van de O */
-    --sgap:.045em;  /* speling van de inkeping aan weerszijden */
-    --stop:.0614em; /* bovenkant streep: .10em boven de O uit */
-    --sh:.43em;     /* tot het hart van de O (.4914em vanaf doostop) */
-  }
-
-  /* De inkeping: een baan in inktkleur die de O doorsnijdt. Géén filter hierop,
-     anders krijgt de donkere baan zelf een groene gloed. */
-  .streep{
-    position:absolute;
-    left:50%;
-    top:calc(var(--stop) - var(--sgap));
-    width:calc(var(--sw) + 2*var(--sgap));
-    height:calc(var(--sh) + 2*var(--sgap));
-    transform:translateX(-50%);
-    background:var(--inkt);
-    border-radius:calc((var(--sw) + 2*var(--sgap))/2);
-  }
-
-  /* De streep zelf; alleen dit deel licht op. Boven/onder vast aan de inkeping,
-     zodat de hoogte automatisch meeloopt met de openings-animatie. */
-  .streep > i{
-    position:absolute;
-    left:50%;
-    top:var(--sgap);
-    bottom:var(--sgap);
-    width:var(--sw);
-    transform:translateX(-50%);
-    background:var(--aan);
-    border-radius:calc(var(--sw)/2);
   }
 
   /* Het blok bepaalt zijn breedte op het merk; STUDIO vult die breedte exact. */
@@ -165,14 +130,13 @@
   /* ---- Startstand: alles onzichtbaar tot de fonts klaar zijn ----
      Voorkomt dat het merk eerst in een systeemfont opflitst. */
   .merk,.woordmerk,.status{opacity:0}
-  .streep{opacity:0;height:0}
+  .punt{opacity:0;transform:scale(.2)}
 
   /* ---- Animatie, pas losgelaten door .klaar op <html> ---- */
   .klaar .merk     {animation:opkomen .85s cubic-bezier(.22,.7,.3,1) .15s forwards}
-  .klaar .streep   {animation:
-                      streep-op .42s cubic-bezier(.2,.9,.25,1.15) .95s forwards}
-  .klaar .streep > i{animation:
-                      aan .55s ease-out 1.18s forwards,
+  .klaar .punt     {animation:
+                      punt-op .5s cubic-bezier(.2,1.5,.35,1) .95s forwards,
+                      aan .55s ease-out 1.12s forwards,
                       ademen 4.4s ease-in-out 1.9s infinite}
   .klaar .woordmerk{animation:opengaan 1.1s cubic-bezier(.22,.7,.3,1) 1.3s forwards}
   .klaar .status   {animation:opkomen .9s ease-out 1.95s forwards}
@@ -192,36 +156,34 @@
     to  {opacity:1;width:100%}
   }
 
-  /* De streep groeit omhoog: de onderkant blijft staan, de hoogte loopt op. */
-  @keyframes streep-op{
-    from{opacity:0;height:0}
-    to  {opacity:1;height:calc(var(--sh) + 2*var(--sgap))}
+  @keyframes punt-op{
+    from{opacity:0;transform:scale(.2)}
+    to  {opacity:1;transform:scale(1)}
   }
 
-  /* De streep is het aan-teken: grijs, dan klikt hij aan */
+  /* De punt is het aan-teken: grijs, dan klikt hij aan */
   @keyframes aan{
-    0%  {background:var(--grijs); filter:none}
-    30% {background:#7ff0bb;      filter:drop-shadow(0 0 10px rgba(25,195,125,.7))}
-    100%{background:var(--aan);   filter:drop-shadow(0 0 3px rgba(25,195,125,.28))}
+    0%  {color:var(--grijs); text-shadow:none}
+    30% {color:#7ff0bb;      text-shadow:0 0 22px rgba(25,195,125,.85)}
+    100%{color:var(--aan);   text-shadow:0 0 8px rgba(25,195,125,.32)}
   }
 
   /* Altijd aan — rustig, geen geknipper */
   @keyframes ademen{
-    0%,100%{filter:drop-shadow(0 0 3px rgba(25,195,125,.28))}
-    50%    {filter:drop-shadow(0 0 8px rgba(25,195,125,.5))}
+    0%,100%{text-shadow:0 0 8px rgba(25,195,125,.32)}
+    50%    {text-shadow:0 0 18px rgba(25,195,125,.58)}
   }
 
   @keyframes glow-in{to{opacity:1}}
 
   /* Wie beweging heeft uitgezet, krijgt meteen de eindstand */
   @media (prefers-reduced-motion:reduce){
-    .klaar .merk,.klaar .streep,.klaar .streep > i,.klaar .woordmerk,
+    .klaar .merk,.klaar .punt,.klaar .woordmerk,
     .klaar .status,.klaar .voet,.klaar .glow{
       animation:none !important;
     }
     .klaar .merk,.klaar .woordmerk,.klaar .status,.klaar .voet{opacity:1}
-    .klaar .streep{opacity:1;height:calc(var(--sh) + 2*var(--sgap))}
-    .klaar .streep > i{background:var(--aan)}
+    .klaar .punt{opacity:1;transform:none;color:var(--aan)}
     .klaar .glow{opacity:1}
   }
 </style>
@@ -229,8 +191,7 @@
 <noscript><style>
   /* Zonder JS wordt .klaar nooit gezet — dan meteen de eindstand tonen. */
   .merk,.woordmerk,.status,.voet{opacity:1 !important}
-  .streep{opacity:1 !important;height:calc(var(--sh) + 2*var(--sgap)) !important}
-  .streep > i{background:var(--aan)}
+  .punt{opacity:1 !important;transform:none !important;color:var(--aan)}
   .glow{opacity:1 !important}
 </style></noscript>
 </head>
@@ -240,7 +201,7 @@
 
   <main class="lockup">
     <div class="merkblok">
-      <h1 class="merk"><span class="o-wrap">O<i class="streep" aria-hidden="true"><i></i></i></span>N</h1>
+      <h1 class="merk">ON<span class="punt">.</span></h1>
       <p class="woordmerk" aria-label="Studio">
         <span aria-hidden="true">S</span><span aria-hidden="true">T</span><span aria-hidden="true">U</span><span aria-hidden="true">D</span><span aria-hidden="true">I</span><span aria-hidden="true">O</span>
       </p>
