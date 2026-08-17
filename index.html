@@ -87,15 +87,21 @@
     display:inline-block;
   }
 
-  /* STUDIO — Syne Regular, verhouding 34/160 uit het bronbestand.
-     margin-top is zo gezet dat de basislijnafstand 65px is bij een merk van 160px. */
+  /* Het blok bepaalt zijn breedte op het merk; STUDIO vult die breedte exact. */
+  .merkblok{width:fit-content}
+
+  /* STUDIO — Syne Regular, corpsverhouding 34/160 uit het bronbestand.
+     De letters worden met space-between over de merkbreedte verdeeld in plaats
+     van met een vaste letter-spacing: zo sluit hij links én rechts exact aan,
+     ongeacht schermformaat. margin-top houdt de basislijnafstand op 65px. */
   .woordmerk{
     margin-top:1.276em;
     font-weight:400;
     font-size:clamp(18px,2.66vw,34px);
     line-height:1;
-    letter-spacing:.42em;
-    white-space:nowrap;
+    display:flex;
+    justify-content:space-between;
+    width:100%;
   }
 
   .status{
@@ -141,10 +147,12 @@
     to  {opacity:1;transform:none}
   }
 
-  /* Het woordmerk zet zich open naar de eindtracking */
+  /* Het woordmerk zet zich open: de letters schuiven uit elkaar doordat de
+     doos breder wordt. Geen letter-spacing-animatie meer, want die vecht met
+     space-between — en geen scaleX, want dat vervormt de letters. */
   @keyframes opengaan{
-    from{opacity:0;letter-spacing:.16em}
-    to  {opacity:1;letter-spacing:.42em}
+    from{opacity:0;width:58%}
+    to  {opacity:1;width:100%}
   }
 
   @keyframes punt-op{
@@ -191,8 +199,12 @@
   <div class="glow" aria-hidden="true"></div>
 
   <main class="lockup">
-    <h1 class="merk">ON<span class="punt">.</span></h1>
-    <p class="woordmerk">STUDIO</p>
+    <div class="merkblok">
+      <h1 class="merk">ON<span class="punt">.</span></h1>
+      <p class="woordmerk" aria-label="Studio">
+        <span aria-hidden="true">S</span><span aria-hidden="true">T</span><span aria-hidden="true">U</span><span aria-hidden="true">D</span><span aria-hidden="true">I</span><span aria-hidden="true">O</span>
+      </p>
+    </div>
     <p class="status">COMING SOON</p>
   </main>
 
