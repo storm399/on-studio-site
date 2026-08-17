@@ -76,9 +76,11 @@
     text-align:center;
   }
 
-  /* ON. — Syne SemiBold, letter-spacing .04em, exact uit het bronbestand */
+  /* ON — Syne, letter-spacing .04em. Gewicht 533 i.p.v. 600: gemeten op de
+     variabele as is dat 9,6% dunnere zijstokken en 9,0% dunnere boven/onder-
+     stokken, oftewel de gevraagde 10% dunner. Fijner dan dit kan de as niet. */
   .merk{
-    font-weight:600;
+    font-weight:533;
     font-size:clamp(84px,13vw,160px);
     line-height:1;
     letter-spacing:.04em;
@@ -92,11 +94,12 @@
   .o-wrap{
     position:relative;
     display:inline-block;
-    /* Gemeten aan Syne SemiBold: cap-hoogte O = .66em, basislijn op .8214em
-       vanaf de doostop, dus de O loopt van .1614em tot .8214em. Zijstok van
-       de O = .12em, boven/onder = .105em. De streep pakt daar het midden van. */
-    --sw:.11em;     /* dikte van de streep, gelijk aan de stok van de O */
-    --sgap:.045em;  /* speling van de inkeping aan weerszijden */
+    /* Gemeten aan Syne op gewicht 533: cap-hoogte O = .66em, basislijn op
+       .8214em vanaf de doostop, dus de O loopt van .1614em tot .8214em.
+       Zijstok = .104em, boven/onder = .091em. De streep pakt daar het midden
+       van, en is net als de letters 10% dunner dan de vorige versie. */
+    --sw:.099em;    /* dikte van de streep, was .11em */
+    --sgap:.04em;   /* speling van de inkeping, meegeschaald */
     --stop:.0614em; /* bovenkant streep: .10em boven de O uit */
     --sh:.43em;     /* tot het hart van de O (.4914em vanaf doostop) */
   }
