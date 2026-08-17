@@ -1,4 +1,4 @@
-# ON Media — coming soon
+# ON studio — coming soon
 
 Tijdelijke landingspagina voor on-studio.nl.
 
@@ -8,9 +8,9 @@ Tijdelijke landingspagina voor on-studio.nl.
 - Totaal ± 60 kB, geen externe requests
 
 ## Merk
-Logo, kleuren en typografie komen uit het Figma-bestand van ON:
-ON in Syne (gewicht 533, letter-spacing .04em) met de aan-streep door de O
-in `#19C37D`, MEDIA in Syne Regular. Achtergrond inkt `#111111`.
+Logo, kleuren en typografie komen uit het Figma-bestand van ON studio:
+ON in Syne SemiBold (letter-spacing .04em) met de aan-streep door de O in
+`#19C37D`, STUDIO in Syne Regular. Achtergrond inkt `#111111`.
 Corps 160/34 px en basislijnafstand 65 px zijn 1-op-1 uit de bron.
 
 De streep is opgemeten op de letter, niet geschat: Syne SemiBold heeft een
@@ -20,7 +20,7 @@ De inkeping is geen echte uitsparing maar een baan in inktkleur achter de
 streep — dat werkt alleen op een egale achtergrond. Komt er ooit een foto of
 verloop achter, dan moet het logo een SVG worden.
 
-Het woordmerk wordt met `space-between` over de merkbreedte verdeeld in plaats van
+STUDIO wordt met `space-between` over de merkbreedte verdeeld in plaats van
 met een vaste letter-spacing, zodat het links en rechts exact aansluit bij
 elk schermformaat — ook als het merk van breedte verandert.
 
