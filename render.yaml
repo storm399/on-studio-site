@@ -13,6 +13,7 @@ services:
   - type: web
     name: on-studio-coming-soon
     runtime: static
+    repo: https://github.com/storm399/on-studio-site
     branch: main
     autoDeploy: true
     staticPublishPath: .
