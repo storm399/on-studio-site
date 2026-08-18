@@ -29,6 +29,9 @@
   }
 
   :root{
+    /* Corps van het merk. Het masker rond het logo rekent hiermee, zodat de
+       uitsparing zich naar het logo voegt en niet naar het schermformaat. */
+    --merkcorps:clamp(84px,13vw,160px);
     --inkt:#111111;
     --wit:#ffffff;
     --grijs:#8a8a8a;
@@ -81,7 +84,7 @@
      stokken, oftewel de gevraagde 10% dunner. Fijner dan dit kan de as niet. */
   .merk{
     font-weight:533;
-    font-size:clamp(84px,13vw,160px);
+    font-size:var(--merkcorps);
     line-height:1;
     letter-spacing:.04em;
     white-space:nowrap;
@@ -147,14 +150,6 @@
     width:100%;
   }
 
-  .status{
-    margin-top:clamp(30px,4vw,48px);
-    font-family:'Space Mono',ui-monospace,monospace;
-    font-size:clamp(10px,1.05vw,12px);
-    letter-spacing:.34em;
-    color:var(--grijs);
-  }
-
   .voet{
     display:flex;
     justify-content:space-between;
@@ -166,9 +161,63 @@
     opacity:0;
   }
 
+
+  /* ---- Drijvende COMING SOON-regels ----------------------------------
+     Drie sporen die horizontaal langsdrijven, boven en onder in
+     tegengestelde richting. Elk spoor bevat de tekst twee keer; de
+     animatie schuift precies 50% op, waardoor de lus naadloos is. */
+  .marquee{
+    position:absolute;
+    inset:0;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    gap:0;
+    overflow:hidden;
+    pointer-events:none;
+    z-index:0;
+    opacity:0;
+  }
+
+  .rij{overflow:hidden}
+
+  .spoor{
+    display:flex;
+    width:max-content;
+    font-weight:400;
+    font-size:clamp(56px,10.5vw,132px);
+    line-height:.88;
+    letter-spacing:-.01em;
+    color:rgba(255,255,255,.11);
+    white-space:nowrap;
+    will-change:transform;
+  }
+  .spoor span{padding-right:.28em}
+
+  .r1 .spoor{animation:drift-links 26s linear infinite}
+  .r2 .spoor{animation:drift-rechts 34s linear infinite}
+  .r3 .spoor{animation:drift-links 30s linear infinite; animation-delay:-9s}
+
+  @keyframes drift-links {from{transform:translateX(0)}    to{transform:translateX(-50%)}}
+  @keyframes drift-rechts{from{transform:translateX(-50%)} to{transform:translateX(0)}}
+
+  /* Het merk staat vóór de sporen. Geen dekkende schijf eronder: die zou
+     zichtbaar worden zodra er een gloed of verloop achter zit. In plaats
+     daarvan maskeren we de sporen zelf, zodat de tekst rond het logo
+     uitfadet in plaats van hard te worden afgesneden. */
+  .lockup{z-index:1}
+
+  .marquee{
+    --uitsparing:radial-gradient(
+      ellipse calc(var(--merkcorps) * 2.7) calc(var(--merkcorps) * 2.15)
+      at 50% 47%, transparent 45%, #000 88%);
+    -webkit-mask-image:var(--uitsparing);
+            mask-image:var(--uitsparing);
+  }
+
   /* ---- Startstand: alles onzichtbaar tot de fonts klaar zijn ----
      Voorkomt dat het merk eerst in een systeemfont opflitst. */
-  .merk,.woordmerk,.status{opacity:0}
+  .merk,.woordmerk{opacity:0}
   .streep{opacity:0;height:0}
 
   /* ---- Animatie, pas losgelaten door .klaar op <html> ---- */
@@ -179,9 +228,9 @@
                       aan .55s ease-out 1.18s forwards,
                       ademen 4.4s ease-in-out 1.9s infinite}
   .klaar .woordmerk{animation:opengaan 1.1s cubic-bezier(.22,.7,.3,1) 1.3s forwards}
-  .klaar .status   {animation:opkomen .9s ease-out 1.95s forwards}
   .klaar .voet     {animation:opkomen 1s ease-out 2.25s forwards}
   .klaar .glow     {animation:glow-in 1.6s ease-out 1.25s forwards}
+  .klaar .marquee  {animation:opkomen 1.4s ease-out 1.5s forwards}
 
   @keyframes opkomen{
     from{opacity:0;transform:translateY(14px)}
@@ -219,11 +268,13 @@
 
   /* Wie beweging heeft uitgezet, krijgt meteen de eindstand */
   @media (prefers-reduced-motion:reduce){
+    .spoor{animation:none !important}
+    .klaar .marquee{opacity:1}
     .klaar .merk,.klaar .streep,.klaar .streep > i,.klaar .woordmerk,
-    .klaar .status,.klaar .voet,.klaar .glow{
+    .klaar .voet,.klaar .glow{
       animation:none !important;
     }
-    .klaar .merk,.klaar .woordmerk,.klaar .status,.klaar .voet{opacity:1}
+    .klaar .merk,.klaar .woordmerk,.klaar .voet{opacity:1}
     .klaar .streep{opacity:1;height:calc(var(--sh) + 2*var(--sgap))}
     .klaar .streep > i{background:var(--aan)}
     .klaar .glow{opacity:1}
@@ -232,15 +283,23 @@
 
 <noscript><style>
   /* Zonder JS wordt .klaar nooit gezet — dan meteen de eindstand tonen. */
-  .merk,.woordmerk,.status,.voet{opacity:1 !important}
+  .merk,.woordmerk,.voet{opacity:1 !important}
   .streep{opacity:1 !important;height:calc(var(--sh) + 2*var(--sgap)) !important}
   .streep > i{background:var(--aan)}
   .glow{opacity:1 !important}
+  .marquee{opacity:1 !important}
+  .spoor{animation:none !important}
 </style></noscript>
 </head>
 <body>
 
   <div class="glow" aria-hidden="true"></div>
+
+  <div class="marquee" aria-hidden="true">
+    <div class="rij r1"><div class="spoor"><span>COMING SOON</span><span>COMING SOON</span><span>COMING SOON</span><span>COMING SOON</span><span>COMING SOON</span><span>COMING SOON</span><span>COMING SOON</span><span>COMING SOON</span><span>COMING SOON</span><span>COMING SOON</span><span>COMING SOON</span><span>COMING SOON</span></div></div>
+    <div class="rij r2"><div class="spoor"><span>COMING SOON</span><span>COMING SOON</span><span>COMING SOON</span><span>COMING SOON</span><span>COMING SOON</span><span>COMING SOON</span><span>COMING SOON</span><span>COMING SOON</span><span>COMING SOON</span><span>COMING SOON</span><span>COMING SOON</span><span>COMING SOON</span></div></div>
+    <div class="rij r3"><div class="spoor"><span>COMING SOON</span><span>COMING SOON</span><span>COMING SOON</span><span>COMING SOON</span><span>COMING SOON</span><span>COMING SOON</span><span>COMING SOON</span><span>COMING SOON</span><span>COMING SOON</span><span>COMING SOON</span><span>COMING SOON</span><span>COMING SOON</span></div></div>
+  </div>
 
   <main class="lockup">
     <div class="merkblok">
@@ -249,7 +308,6 @@
         <span aria-hidden="true">S</span><span aria-hidden="true">T</span><span aria-hidden="true">U</span><span aria-hidden="true">D</span><span aria-hidden="true">I</span><span aria-hidden="true">O</span>
       </p>
     </div>
-    <p class="status">COMING SOON</p>
   </main>
 
   <footer class="voet">

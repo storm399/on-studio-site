@@ -28,8 +28,18 @@ elk schermformaat — ook als het merk van breedte verandert.
 
 ## Animatie
 De streep is het aan-teken: die groeit als laatste omhoog uit de O, klikt aan
-op groen en blijft daarna rustig branden. `prefers-reduced-motion` en
-`<noscript>` tonen direct de eindstand.
+op groen en blijft daarna rustig branden.
+
+Daarachter drijven drie sporen `COMING SOON` horizontaal langs, boven en onder
+in tegengestelde richting. Elk spoor bevat de tekst twee keer en schuift exact
+50% op, waardoor de lus naadloos is. De sporen worden gemaskeerd met een
+radiaal verloop rond het logo -- geen dekkende vorm eronder, want die wordt
+zichtbaar zodra er een gloed of verloop achter zit. Het masker rekent met
+`--merkcorps`, dus de uitsparing voegt zich naar het logo en niet naar het
+schermformaat.
+
+`prefers-reduced-motion` zet de sporen stil en toont direct de eindstand;
+`<noscript>` doet hetzelfde.
 
 ## Lokaal bekijken
     python3 -m http.server 4321
